@@ -1,6 +1,12 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { 
+  Text, 
+  View, 
+  TouchableOpacity, 
+  StyleSheet 
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Cores from '../constantes/Cores';
 
 const ContactItem = (props) => {
   return (
@@ -20,7 +26,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 12,
     paddingVertical: 8,
-    backgroundColor: '#FFF',
+    backgroundColor: Cores.white,
     borderColor: 'black',
     borderWidth: 1,
     marginBottom: 8,
@@ -30,7 +36,8 @@ const styles = StyleSheet.create({
   },
   contactInfo: {
     marginLeft: 16,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginRight: 50
   },
   contactName: {
     fontFamily: 'Archivo_700Bold',
