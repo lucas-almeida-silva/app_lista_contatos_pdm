@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { 
   View,
   Text,
@@ -7,37 +7,26 @@ import {
   Platform, 
   Alert 
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import * as contactsActions from '../store/contacts-actions';
 import ContactItem from '../components/ContactItem';
 import ButtonHeader from '../components/ButtonHeader';
-import Cores from '../constantes/Cores';
+import Colors from '../constantes/Colors';
 
-const ContactListScreen = (props) => {
-  const [contacts, setContacts] = useState([]);
-  const [counter, setCounter] = useState(10);
+const ContactListScreen = () => {
+  const contacts = useSelector(state => state.contacts.contacts);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    props.navigation.setParams({onAddContact: addContact})
-  }, [contacts]);
-
-  const addContact = (contact) => {
-    setContacts(contacts => {  
-      setCounter(counter + 2);
-      return [...contacts, {key: counter.toString(), value: contact}];
-    });
-  }
-
-  const removeContact = (key) => {
+  const removeContact = (id) => {
     Alert.alert(
       'Confirmação',
-      `Tem certeza que deseja excluir o contato ${contacts.find(contact => contact.key === key).value.name}?`,
+      `Tem certeza que deseja excluir o contato ${contacts.find(contact => contact.id === id)?.name}?`,
       [
         {
           text: 'Sim',
           onPress: () => {
-            setContacts(contacts => {
-              return contacts.filter(contact => contact.key != key);
-            });
+            dispatch(contactsActions.removeContact(id));
           }
         },
         {
@@ -46,7 +35,6 @@ const ContactListScreen = (props) => {
       ],
       {cancelable: false}
     )
-    
   }
 
   return (
@@ -56,11 +44,11 @@ const ContactListScreen = (props) => {
         {!contacts.length && <Text style={styles.contactListEmpty}>Nenhum contato salvo</Text>}
         <FlatList
           data={contacts}
+          keyExtractor={contact => contact.id}
           renderItem={
             (contact) => (
               <ContactItem
-                contactKey={contact.item.key}
-                contact={contact.item.value}
+                contact={contact.item}
                 onDelete={removeContact}
               />
             )
@@ -71,18 +59,37 @@ const ContactListScreen = (props) => {
   );
 }
 
+ContactListScreen.navigationOptions = options => {
+  return {
+    headerTitle: 'Contatos',
+    headerRight: () => {
+      return (
+        <HeaderButtons HeaderButtonComponent={ButtonHeader}>
+          <Item 
+            title="Adicionar"
+            iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
+            onPress={() => {
+              options.navigation.navigate('NewContact');
+            }}
+          />
+        </HeaderButtons>
+      );
+    }
+  }
+}
+
 export default ContactListScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    backgroundColor: Cores.background
+    backgroundColor: Colors.background
   },
   title: {
     fontFamily: 'Archivo_700Bold',
     fontSize: 38,
-    color: Cores.titlePrimary,
+    color: Colors.titlePrimary,
     marginBottom: 24,
     textAlign: 'center'
   },
@@ -97,21 +104,3 @@ const styles = StyleSheet.create({
   }
 }); 
 
-ContactListScreen.navigationOptions = options => {
-  return {
-    headerTitle: 'Contatos',
-    headerRight: () => {
-      return (
-        <HeaderButtons HeaderButtonComponent={ButtonHeader}>
-          <Item 
-            title="Adicionar"
-            iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
-            onPress={() => {
-              options.navigation.navigate('NewContact', {onAddContact: options.navigation.getParam('onAddContact')})
-            }}
-          />
-        </HeaderButtons>
-      );
-    }
-  }
-}

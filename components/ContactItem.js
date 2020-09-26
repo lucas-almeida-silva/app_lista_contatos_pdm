@@ -2,16 +2,16 @@ import React from 'react';
 import { 
   Text, 
   View, 
+  Image,
   TouchableOpacity, 
   StyleSheet 
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import Cores from '../constantes/Cores';
+import Colors from '../constantes/Colors';
 
 const ContactItem = (props) => {
   return (
-    <TouchableOpacity onLongPress={() => props.onDelete(props.contactKey)} style={styles.container}>
-      <Ionicons name="md-contact" size={60} />
+    <TouchableOpacity onLongPress={() => props.onDelete(props.contact.id)} style={styles.container}>
+      <Image source={{uri: props.contact.imageURI}} style={styles.contactImage} />
       <View style={styles.contactInfo}>
         <Text style={styles.contactName}>{props.contact.name}</Text>
         <Text style={styles.contactNumber}>{props.contact.number}</Text>
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 12,
     paddingVertical: 8,
-    backgroundColor: Cores.white,
+    backgroundColor: Colors.white,
     borderColor: 'black',
     borderWidth: 1,
     marginBottom: 8,
@@ -38,6 +38,14 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     justifyContent: 'center',
     marginRight: 50
+  },
+  contactImage: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#CCC',
+    borderColor: '#555',
+    borderWidth: 1,
   },
   contactName: {
     fontFamily: 'Archivo_700Bold',

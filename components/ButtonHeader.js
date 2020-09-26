@@ -1,7 +1,7 @@
 import React from 'react';
 import { HeaderButton } from 'react-navigation-header-buttons';
 import { Ionicons } from '@expo/vector-icons';
-import Cores from '../constantes/Cores';
+import Colors from '../constantes/Colors';
 
 const ButtonHeader = (props) => {
   return (
@@ -9,7 +9,7 @@ const ButtonHeader = (props) => {
       {...props}
       IconComponent={Ionicons}
       iconSize={35}
-      color={Cores.button}
+      color={Colors.button}
     />
   );
 }

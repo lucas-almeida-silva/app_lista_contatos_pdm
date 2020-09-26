@@ -2,6 +2,10 @@ import React from 'react';
 import { AppLoading } from 'expo';
 import { Archivo_400Regular, Archivo_700Bold, useFonts } from '@expo-google-fonts/archivo';
 import { Poppins_400Regular, Poppins_600SemiBold } from '@expo-google-fonts/poppins';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import reduxThunk from 'redux-thunk';
+import contactsReducer from './store/contacts-reducers'
 import ContactsNavigator from './navigation/ContactsNavigator';
 
 export default function App() {
@@ -12,5 +16,17 @@ export default function App() {
     Poppins_600SemiBold
   });
 
-  return !fontsLoaded ? <AppLoading /> : <ContactsNavigator />
+  const rootReducer = combineReducers({
+    contacts: contactsReducer
+  });
+
+  const store = createStore(rootReducer, applyMiddleware(reduxThunk));
+
+  return !fontsLoaded 
+  ? <AppLoading /> 
+  : (
+    <Provider store={store}>
+      <ContactsNavigator />
+    </Provider>
+  );
 }

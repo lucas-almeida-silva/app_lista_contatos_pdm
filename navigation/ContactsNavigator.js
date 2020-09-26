@@ -2,7 +2,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from "react-navigation";
 import ContactListScreen from '../screens/ContactListScreen';
 import NewContactScreen from '../screens/NewContactScreen';
-import Cores from '../constantes/Cores';
+import Colors from '../constantes/Colors';
 
 const ContactsNavigator = createStackNavigator({
   ContactList: ContactListScreen,
@@ -10,13 +10,14 @@ const ContactsNavigator = createStackNavigator({
 }, {
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: Cores.primary
+        backgroundColor: Colors.primary,
+        height: 100
       },
       headerTitleStyle: {
         fontSize: 24,
         fontFamily: 'Archivo_700Bold'
       },
-      headerTintColor: Cores.white
+      headerTintColor: Colors.white
     }
   }
 );
