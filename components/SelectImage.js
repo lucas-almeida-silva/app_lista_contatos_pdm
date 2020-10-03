@@ -29,7 +29,7 @@ const CaptureImage = (props) => {
         {
           imageURI ?
             <Image
-              source={{ uri: imageURI }}
+              source={{uri: imageURI}}
               style={styles.image}
             />
             :

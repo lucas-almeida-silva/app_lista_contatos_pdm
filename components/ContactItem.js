@@ -7,11 +7,12 @@ import {
   StyleSheet 
 } from 'react-native';
 import Colors from '../constantes/Colors';
+import defaultUserImg from '../assets/images/default-user-image.png';
 
 const ContactItem = (props) => {
   return (
     <TouchableOpacity onLongPress={() => props.onDelete(props.contact.id)} style={styles.container}>
-      <Image source={{uri: props.contact.imageURI}} style={styles.contactImage} />
+      <Image source={props.contact.imageURI ? {uri: props.contact.imageURI} : defaultUserImg} style={styles.contactImage} />
       <View style={styles.contactInfo}>
         <Text style={styles.contactName}>{props.contact.name}</Text>
         <Text style={styles.contactNumber}>{props.contact.number}</Text>

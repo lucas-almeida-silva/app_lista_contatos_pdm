@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import reduxThunk from 'redux-thunk';
 import contactsReducer from './store/contacts-reducers'
 import ContactsNavigator from './navigation/ContactsNavigator';
+import { init } from './helpers/db';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -15,6 +16,10 @@ export default function App() {
     Poppins_400Regular,
     Poppins_600SemiBold
   });
+
+  init()
+    .then(() => console.log('Banco criado com sucesso'))
+    .catch((err) => console.log(`Erro ao criar o banco: ${err}`))
 
   const rootReducer = combineReducers({
     contacts: contactsReducer

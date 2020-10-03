@@ -70,9 +70,7 @@ const NewContactScreen = (props) => {
           style={styles.input}
         />
         <SelectImage onCaptureImage={handleCaptureImageURI} />
-        <RectButton 
-          onPress={handleAddContact}
-          style={styles.addButton}>
+        <RectButton onPress={handleAddContact} style={styles.addButton}>
           <Text style={styles.addButtonText}>Adicionar</Text>
         </RectButton>
       </View>

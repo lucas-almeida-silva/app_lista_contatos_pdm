@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
   View,
   Text,
@@ -17,6 +17,10 @@ import Colors from '../constantes/Colors';
 const ContactListScreen = () => {
   const contacts = useSelector(state => state.contacts.contacts);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(contactsActions.getContacts());
+  })
 
   const removeContact = (id) => {
     Alert.alert(
