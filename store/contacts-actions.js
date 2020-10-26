@@ -19,7 +19,7 @@ export const getContacts = () => {
   }
 }
 
-export const addContact = (name, number, imageURI) => {
+export const addContact = (name, number, imageURI, location) => {
   return async dispatch => {
     let imagePath;
     
@@ -33,9 +33,8 @@ export const addContact = (name, number, imageURI) => {
           to: imagePath
         });
       } 
+      const result = await insertContact(name, number, imagePath, location);
 
-      const result = await insertContact(name, number, imagePath);
-  
       dispatch({type: ADD_CONTACT, contact: {id: result.insertId, name: name, number: number, imageURI: imagePath}});
     }
     catch(err) {

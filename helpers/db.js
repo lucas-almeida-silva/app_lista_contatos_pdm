@@ -10,7 +10,10 @@ export const init = () => {
           id INTEGER PRIMARY KEY,
           name TEXT NOT NULL,
           number TEXT NOT NULL,
-          imageURI TEXT NULL)`,
+          imageURI TEXT NULL,
+          latitude REAL NOT NULL,
+          longitude REAL NOT NULL,
+          datetime TEXT NOT NULL)`,
         [],
         () => {resolve()},
         (_, err) => {reject(err)},
@@ -34,12 +37,13 @@ export const getAllContacts = () => {
   return promise;
 }
 
-export const insertContact = (name, number, imageURI) => {
+export const insertContact = (name, number, imageURI, location) => {
+  console.log('Location on action: ', location)
   const promise = new Promise((resolve, reject) => {
     db.transaction((tx) => {
       tx.executeSql(
-        'INSERT INTO tb_contact (name, number, imageURI) VALUES(?,?,?)',
-        [name, number, imageURI],
+        'INSERT INTO tb_contact (name, number, imageURI, latitude, longitude, datetime) VALUES(?,?,?,?,?,?)',
+        [name, number, imageURI, location.latitude, location.longitude, new Date().toISOString()],
         (_, result) => {resolve(result)},
         (_, err) => {reject(err)}
       )

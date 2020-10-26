@@ -20,7 +20,7 @@ const ContactListScreen = () => {
 
   useEffect(() => {
     dispatch(contactsActions.getContacts());
-  })
+  }, [])
 
   const removeContact = (id) => {
     Alert.alert(
