@@ -8,21 +8,20 @@ import {
   Alert
 } from 'react-native';
 
-import { useDispatch } from 'react-redux';
 import { RectButton, ScrollView } from 'react-native-gesture-handler';
 import { TextInputMask } from 'react-native-masked-text';
+import { documentDirectory, moveAsync } from 'expo-file-system';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import * as contactsActions from '../store/contacts-actions';
+
 import SelectImage from '../components/SelectImage';
 import Colors from '../constantes/Colors';
+import db from '../database/db';
 
 const NewContactScreen = (props) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [imageURI, setImageURI] = useState();
-
-  const dispatch = useDispatch();
 
   const handleChangeName = (name) => {
     setName(name);
@@ -34,6 +33,29 @@ const NewContactScreen = (props) => {
 
   const handleCaptureImageURI = (imageURI) => {
     setImageURI(imageURI);
+  }
+
+  const handleSaveImageInDevice = async () => {
+    try {
+      let imagePath;
+
+      if(imageURI) {
+        const fileName = imageURI.split('/').pop();
+        imagePath = documentDirectory + fileName;
+
+        await moveAsync({
+          from: imageURI,
+          to: imagePath
+        });
+
+      }
+      
+      return imagePath ?? null;
+    }
+    catch(err) {
+      Alert.alert('Erro', 'Ocorreu um erro ao salvar o contato. Tente novamente mais tarde!');
+      throw err;
+    }
   }
 
   const handleVerifyLocationPermission = async () => {
@@ -78,7 +100,15 @@ const NewContactScreen = (props) => {
 
     const location = await handleCaptureLocation();
 
-    dispatch(contactsActions.addContact(name, number, imageURI, location));
+    const imagePath = await handleSaveImageInDevice();
+
+    db.collection('contacts').add({
+      name,
+      number,
+      imageURI: imagePath,
+      location,
+      dateTime: new Date()
+    })
     props.navigation.navigate('ContactList');
   }
 
