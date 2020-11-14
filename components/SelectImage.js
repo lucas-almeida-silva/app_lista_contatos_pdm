@@ -3,22 +3,56 @@ import {
   View,
   Image,
   Text,
-  StyleSheet
+  StyleSheet,
+  Alert
 } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
-import { launchImageLibraryAsync } from 'expo-image-picker';
+import { launchImageLibraryAsync, launchCameraAsync } from 'expo-image-picker';
 import Colors from '../constantes/Colors';
 
 const CaptureImage = (props) => {
   const [imageURI, setImageURI] = useState();
 
-  const handleSelectImage = async () => {
+  const handleSelectImage = () => {
+    Alert.alert(
+      'Selecionar imagem',
+      'Como você deseja selecionar a imagem?',
+      [
+        {
+          text: 'Cancelar'
+        },
+        { 
+          text: 'Camêra',
+          onPress: handleCaptureImageFromCamera
+        },
+        {
+          text: 'Galeria',
+          onPress: handleSelectImageFromLibrary
+        }
+      ]
+    );
+  }
+
+  const handleCaptureImageFromCamera = async () => {
+    const image = await launchCameraAsync({
+      allowsEditing: true,
+      aspect: [40, 40],
+      quality: 1,
+      base64: true
+    });
+
+    setImageURI(image.uri);
+    props.onCaptureImage(image.uri);
+  }
+
+  const handleSelectImageFromLibrary = async () => {
     const image = await launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [40, 40],
-      quality: 1
+      quality: 1,
+      base64: true
     });
-    
+
     setImageURI(image.uri);
     props.onCaptureImage(image.uri);
   }

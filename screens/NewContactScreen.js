@@ -50,7 +50,7 @@ const NewContactScreen = (props) => {
 
       }
       
-      return imagePath ?? null;
+      return imagePath || null;
     }
     catch(err) {
       Alert.alert('Erro', 'Ocorreu um erro ao salvar o contato. Tente novamente mais tarde!');

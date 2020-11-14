@@ -36,7 +36,7 @@ const ContactListScreen = () => {
     })
   }, []);
 
-  const removeContact = (id) => {
+  const handleRemoveContact = (id) => {
     Alert.alert(
       'Confirmação',
       `Tem certeza que deseja excluir ${contacts.find(contact => contact.id === id)?.name} da sua lista de contatos?`,
@@ -67,7 +67,7 @@ const ContactListScreen = () => {
             (contact) => (
               <ContactItem
                 contact={contact.item}
-                onDelete={removeContact}
+                onDelete={handleRemoveContact}
               />
             )
           }
